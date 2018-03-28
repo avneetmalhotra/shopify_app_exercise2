@@ -1,0 +1,27 @@
+<% content_for :javascript do %>
+  <script type="text/javascript">
+    ShopifyApp.ready(function(){
+      ShopifyApp.Bar.initialize({ title: "Settings" });
+    });
+  </script>
+<% end %>
+
+<%= form_with model: @discount_setting, url: discount_setting_path, local: true, html: { multipart: true } do |form| %>
+  <div>
+    <h2>Please upload the csv file.</h2>
+  </div>
+  <br>
+
+  <div>
+    <%= form.file_field :customers_list %>
+  </div>
+  <br>
+
+  <div>
+    <%= form.submit 'Upload' %>
+  </div>
+<% end %>
+
+<hr>
+
+<%= link_to 'Home', root_path %>
