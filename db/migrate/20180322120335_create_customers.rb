@@ -9,11 +9,11 @@ class CreateCustomers < ActiveRecord::Migration[5.1]
       t.bigint :shopify_price_rule_id
       t.bigint :shopify_discount_code_id
 
-      t.references :discount_setting
+      t.references :discount_upload
 
       t.timestamps
     end
 
-    # add_index :customers, :advance_discount_code, unique: true
+    add_index :customers, :advance_discount_code, unique: true
   end
 end

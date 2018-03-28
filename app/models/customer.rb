@@ -1,13 +1,13 @@
 class Customer < ApplicationRecord
 
-  delegate :shop, to: :discount_setting
+  delegate :shop, to: :discount_upload
   ## ASSOCATIONS
-  belongs_to :discount_setting
+  belongs_to :discount_upload
 
   ## VALIDATIONS
   validates :shopify_customer_id, :shopify_price_rule_id, numericality: { only_integer: true }, allow_blank: true
 
-  validates :discount_amount, numericality: { greater_than: 0.01 }, allow_blank: true
+  validates :discount_amount, presence: true, numericality: { greater_than: 0.01 }, allow_blank: true
   validates :email, presence: true, uniqueness: { case_sensitive: false }, format:{
     with: Regexp.new(ENV['email_regex']),
     allow_blank: true

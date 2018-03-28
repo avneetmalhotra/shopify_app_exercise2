@@ -6,14 +6,15 @@
   </script>
 <% end %>
 
-<%= form_with model: @discount_setting, url: discount_setting_path, local: true, html: { multipart: true } do |form| %>
+<%= form_for @setting do |form| %>
   <div>
     <h2>Please upload the csv file.</h2>
   </div>
-  <br>
 
   <div>
-    <%= form.file_field :customers_list %>
+    <%= form.fields_for(:discount_uploads, @setting.discount_uploads.new, multipart: true) do |discount_upload_form| %>
+      <%= discount_upload_form.file_field :discount %>
+    <% end %>
   </div>
   <br>
 
@@ -23,5 +24,8 @@
 <% end %>
 
 <hr>
+
+<p><%= link_to 'Click here to modify your theme.', modify_theme_setting_path(@setting, modify_theme: 'yes'), method: :patch  %>
+</p>
 
 <%= link_to 'Home', root_path %>
