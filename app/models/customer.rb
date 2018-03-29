@@ -24,7 +24,23 @@ class Customer < ApplicationRecord
     errors.full_messages.join(', ')
   end
 
+  def remove_advance_discount_code
+    delete_advance_discount_code_metafield
+  end
+
   private
+
+  def delete_advance_discount_code_metafield
+    shop.with_shopify_session do
+      shopify_customer = ShopifyAPI::Customer.find(:all, email: webhook[:email]).first
+      shopify_customer_advance_discount_code_metafield = customer.metafields.where(key: 'advance_discount_code').first
+      
+      if customer_advance_discount_code_metafield.present?
+        ShopifyAPI::Metafield.delete(customer_advance_discount_code_metafield.id)
+        update(advance_discount_code: 0)
+      end
+    end
+  end
 
   def set_shopify_customer_id
     shop.with_shopify_session do
@@ -34,7 +50,7 @@ class Customer < ApplicationRecord
 
   def create_price_rule
     shop.with_shopify_session do
-      price_rule = ShopifyAPI::PriceRule.create(title: generate_price_rule_title, target_type: 'line_item', target_selection: 'all', allocation_method: 'across', value_type: 'fixed_amount', value: discount_amount*(-1), customer_selection: 'prerequisite', prerequisite_customer_ids: [shopify_customer_id], starts_at: Time.current)
+      price_rule = ShopifyAPI::PriceRule.create(title: generate_price_rule_title, target_type: 'line_item', target_selection: 'all', allocation_method: 'across', value_type: 'fixed_amount', value: discount_amount*(-1), customer_selection: 'prerequisite', prerequisite_customer_ids: [shopify_customer_id], starts_at: Time.current, usage_limit: 1)
       discount_code = ShopifyAPI::DiscountCode.create(code: price_rule.title, price_rule_id: price_rule.id)
       self.advance_discount_code = discount_code.code
       self.shopify_discount_code_id = discount_code.id
