@@ -7,7 +7,8 @@ class Setting < ApplicationRecord
   accepts_nested_attributes_for :discount_uploads
 
   ## VALIDATIONS
-  validates :name, presence: true
+  validates :name, presence: true, uniqueness: { scope: :shop_id }
+
 
   def enqueue_modify_theme_job
     ModifyThemeJob.perform_later(id)  

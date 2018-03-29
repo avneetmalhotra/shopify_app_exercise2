@@ -30,7 +30,7 @@ class SettingsController < ApplicationController
     end
 
     def fetch_setting
-      @setting = current_shop.settings.where(name: 'Upload Discount Files').first
+      @setting = current_shop.discount_upload_setting
       if @setting.blank?
         render_404
       end
