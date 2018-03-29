@@ -19,13 +19,13 @@
   <br>
 
   <div>
-    <%= form.submit 'Upload' %>
+    <%= form.submit I18n.t(:upload, scope: [:action]) %>
   </div>
 <% end %>
 
 <hr>
 
-<p><%= link_to 'Click here to modify your theme.', modify_theme_setting_path(@setting, modify_theme: 'yes'), method: :patch  %>
+<p><%= link_to I18n.t(:modify_theme, scope: :action), modify_theme_setting_path(@setting, modify_theme: 'yes'), method: :patch  %>
 </p>
 
-<%= link_to 'Home', root_path %>
+<%= link_to I18n.t(:home, scope: :action), root_path %>

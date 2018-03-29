@@ -8,7 +8,7 @@ class Customer < ApplicationRecord
   validates :shopify_customer_id, :shopify_price_rule_id, numericality: { only_integer: true }, allow_blank: true
 
   validates :discount_amount, presence: true, numericality: { greater_than: 0.01 }, allow_blank: true
-  validates :email, presence: true, uniqueness: { case_sensitive: false }, format:{
+  validates :email, presence: true, format:{
     with: Regexp.new(ENV['email_regex']),
     allow_blank: true
   }
@@ -32,12 +32,12 @@ class Customer < ApplicationRecord
 
   def delete_advance_discount_code_metafield
     shop.with_shopify_session do
-      shopify_customer = ShopifyAPI::Customer.find(:all, email: webhook[:email]).first
-      shopify_customer_advance_discount_code_metafield = customer.metafields.where(key: 'advance_discount_code').first
-      
-      if customer_advance_discount_code_metafield.present?
-        ShopifyAPI::Metafield.delete(customer_advance_discount_code_metafield.id)
-        update(advance_discount_code: 0)
+      shopify_customer = ShopifyAPI::Customer.search(query: "email:#{email}").first
+      shopify_customer_advance_discount_code_metafield = shopify_customer.metafields.find.detect{ |metafield| metafield.key == 'advance_discount_code' }
+
+      if shopify_customer_advance_discount_code_metafield.present?
+        shopify_customer_advance_discount_code_metafield.destroy
+        update(advance_discount_code: 'used')
       end
     end
   end

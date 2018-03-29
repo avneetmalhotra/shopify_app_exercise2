@@ -18,4 +18,4 @@
   <p>This app has not created any webhooks for this Shop. Add webhooks to your ShopifyApp initializer if you need webhooks</p>
 <% end %>
 
-<%= link_to 'Settings', edit_setting_path(@discount_setting) %>
+<%= link_to I18n.t(:settings, scope: :action), edit_setting_path(@discount_setting) %>

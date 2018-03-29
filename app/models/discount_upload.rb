@@ -68,18 +68,25 @@ class DiscountUpload < ApplicationRecord
         next
       end
       customer = customers.build(email: record[0], discount_amount: record[1].to_f)
-
       unless customer.valid?
-        errors_file = File.open("discount_data_errors-#{id}.txt", 'a')
-
-        errors_file.write("\nline-##{index + 1} - " + customer.pretty_errors)
-
-        customers.clear
-        update(error_type: 'invalid_data', status: 'failed', discount_data_errors: errors_file)
-        errors_file.close
+        @temp_errors_file = File.open("discount_data_errors-#{id}.txt", 'a')
+        @temp_errors_file.write("\nline-##{index + 1} - " + customer.pretty_errors)
+        self.error_type = 'invalid_data'
+        self.status = 'failed'
       end
     end
 
+    if instance_variables.include?(:@temp_errors_file)
+      save_discount_data_errors_file
+    end
+  end
+
+  def save_discount_data_errors_file
+    @temp_errors_file.close
+    @temp_errors_file = File.open(@temp_errors_file.path, 'r')
+    customers.clear
+    update(discount_data_errors: @temp_errors_file)
+    File.delete(@temp_errors_file.path)
   end
 
   def enqueue_read_discount_job

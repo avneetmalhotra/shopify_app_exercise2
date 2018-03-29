@@ -30,5 +30,12 @@
 # available at http://guides.rubyonrails.org/i18n.html.
 
 en:
+  action:
+    settings: 'Settings'
+    upload: 'Upload'
+    home: 'Home'
+    modify_theme: 'Click here to modify your theme.'
+
   flash:
-    notice: 'Setting was successfully updated.'
+    notice: 
+      file_successfully_uploaded: 'File was successfully uploaded. You will shortly receive status email.'
