@@ -1,0 +1,31 @@
+<% content_for :javascript do %>
+  <script type="text/javascript">
+    ShopifyApp.ready(function(){
+      ShopifyApp.Bar.initialize({ title: "Settings" });
+    });
+  </script>
+<% end %>
+
+<%= form_for @setting do |form| %>
+  <div>
+    <h2>Please upload the csv file.</h2>
+  </div>
+
+  <div>
+    <%= form.fields_for(:discount_uploads, @setting.discount_uploads.new, multipart: true) do |discount_upload_form| %>
+      <%= discount_upload_form.file_field :discount %>
+    <% end %>
+  </div>
+  <br>
+
+  <div>
+    <%= form.submit I18n.t(:upload, scope: [:action]) %>
+  </div>
+<% end %>
+
+<hr>
+
+<p><%= link_to I18n.t(:modify_theme, scope: :action), modify_theme_setting_path(@setting, modify_theme: 'yes'), method: :patch  %>
+</p>
+
+<%= link_to I18n.t(:home, scope: :action), root_path %>

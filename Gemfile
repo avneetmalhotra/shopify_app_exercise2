@@ -8,9 +8,9 @@ end
 gem 'shopify_app', '~> 8.2.5'
 gem 'jquery-ui-rails', '~>6.0.1'
 gem 'jquery-rails', '~> 4.3.1'
-# gem 'delayed_job_active_record', '~> 4.1.2'
+gem 'delayed_job_active_record', '~> 4.1.2'
 # gem 'nested_form', '~> 0.3.2'
-
+gem 'paperclip', '~> 5.1.0'
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
 gem 'rails', '~> 5.1.5'
 # Use mysql as the database for Active Record

@@ -1,0 +1,1 @@
+DISCOUNT_UPLOAD_SETTING_NAME = 'Upload Discount Files'
